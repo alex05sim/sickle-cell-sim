@@ -42,13 +42,11 @@ public class GraphWindow extends JFrame {
         renderer.setSeriesPaint(0, Color.BLUE); // Healthy
         renderer.setSeriesPaint(1, new Color(128, 0, 128)); // Carrier (Purple)
         renderer.setSeriesPaint(2, Color.RED); // Sickle Cell
-
         plot.setRenderer(renderer);
 
         // Display graph
         ChartPanel chartPanel = new ChartPanel(chart);
         add(chartPanel);
-
         setVisible(true);
     }
     public void updateGraph(int generation, int healthy, int carriers, int sickle) {

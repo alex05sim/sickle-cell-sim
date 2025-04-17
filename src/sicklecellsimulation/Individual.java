@@ -1,6 +1,9 @@
 package sicklecellsimulation;
 
 import java.awt.*;
+import java.util.List;
+
+import java.util.ArrayList;
 import java.util.Random;
 
 class Individual {
@@ -8,46 +11,81 @@ class Individual {
     private double velocityX, velocityY;
     private Color color;
     private final Random random = new Random();
+    private final Individual parent1;
+    private final Individual parent2;
+    private final String genotype;
+    private final List<Individual> children = new ArrayList<>();
+    private int age = 0;
 
-    // Constructor for initial population
-    public Individual(int x, int y, boolean hasSickleCell) {
-        this.x = x;
-        this.y = y;
-        this.velocityX = random.nextInt(3) - 1;
-        this.velocityY = random.nextInt(3) - 1;
 
-        if (hasSickleCell) {
-            this.color = Color.RED;
-        } else {
-            this.color = Math.random() < 0.5 ? Color.BLUE : new Color(128, 0, 128);
-        }
-    }
 
-    // ✅ New Constructor for Genetic Inheritance
+
     public Individual(int x, int y, Individual parent1, Individual parent2) {
         this.x = x;
         this.y = y;
         this.velocityX = random.nextInt(3) - 1;
         this.velocityY = random.nextInt(3) - 1;
+        this.parent1 = parent1;
+        this.parent2 = parent2;
 
-        boolean parent1Sickle = parent1.isSickleCell();
-        boolean parent2Sickle = parent2.isSickleCell();
-        boolean parent1Carrier = parent1.isCarrier();
-        boolean parent2Carrier = parent2.isCarrier();
+        // Inherit genotype
+        String allele1 = parent1.getRandomAllele();
+        String allele2 = parent2.getRandomAllele();
+        String rawGenotype = allele1 + allele2;
+        if (rawGenotype.equals("SA")) rawGenotype = "AS";
+        this.genotype = rawGenotype;
 
-        if (parent1Sickle && parent2Sickle) {
-            this.color = Color.RED; // Both parents have sickle cell = child must have it
-        } else if ((parent1Sickle && parent2Carrier) || (parent2Sickle && parent1Carrier)) {
-            this.color = Color.RED; // One sickle parent + one carrier = sickle cell
-        } else if (parent1Carrier && parent2Carrier) {
-            this.color = Math.random() < 0.25 ? Color.RED : new Color(128, 0, 128); // 25% chance sickle, 50% carrier
-        } else if (parent1Sickle || parent2Sickle || parent1Carrier || parent2Carrier) {
-            this.color = new Color(128, 0, 128); // If any parent is sickle or carrier, 50% chance of carrier
-        } else {
-            this.color = Color.BLUE; // Both parents healthy = healthy child
+
+        // Set color based on genotype
+        switch (genotype) {
+            case "AA" -> this.color = Color.BLUE;
+            case "AS" -> this.color = new Color(128, 0, 128); // Purple
+            case "SS" -> this.color = Color.RED;
         }
     }
+    public String getGenotype() {
+        return genotype;
+    }
 
+    public Individual getParent1() {
+        return parent1;
+    }
+
+    public Individual getParent2() {
+        return parent2;
+    }
+
+    // Randomly returns either "A" or "S" based on parent's genotype
+    public String getRandomAllele() {
+        if (genotype.equals("AA")) return "A";
+        if (genotype.equals("SS")) return "S";
+        return Math.random() < 0.5 ? "A" : "S";
+    }
+    public Individual(int x, int y, String genotype) {
+        this.x = x;
+        this.y = y;
+        this.velocityX = random.nextInt(3) - 1;
+        this.velocityY = random.nextInt(3) - 1;
+        this.genotype = genotype;
+        this.parent1 = null;
+        this.parent2 = null;
+
+        // Set color
+        switch (genotype) {
+            case "AA" -> this.color = Color.BLUE;
+            case "AS" -> this.color = new Color(128, 0, 128);
+            case "SS" -> this.color = Color.RED;
+        }
+    }
+    public void addChild(Individual child) {
+        children.add(child);
+    }
+
+    public List<Individual> getChildren() {
+        return children;
+    }
+
+    //basic physics engine for visual
     public void moveSmoothly(int maxWidth, int maxHeight, Individual[] others) {
         x += velocityX;
         y += velocityY;
@@ -145,6 +183,24 @@ class Individual {
     public void animateMutation() {
         animationSize = 12; // Slightly grows when mutation occurs
     }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void incrementAge() {
+        age++;
+    }
+
+    public int getSubtreeSize() {
+        int size = 1;
+        for (Individual child : children) {
+            size += child.getSubtreeSize();
+        }
+        return size;
+    }
+
+
 
 
 }
