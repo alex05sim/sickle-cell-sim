@@ -159,14 +159,14 @@ class Individual {
     private int fadeAlpha = 255;
     private boolean fadingOut = false;
 
-    public void draw(Graphics g) {
+    public void draw(Graphics g, int size) {
         if (fadingOut) {
             fadeAlpha -= 15;
             if (fadeAlpha <= 0) fadeAlpha = 0;
         }
 
         g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), fadeAlpha));
-        g.fillOval((int) x, (int) y, animationSize, animationSize);
+        g.fillOval((int) x, (int) y, size, size);
 
         // Reset animation after one frame
         animationSize = 10;

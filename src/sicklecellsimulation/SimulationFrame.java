@@ -1,7 +1,10 @@
 package sicklecellsimulation;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 
 public class SimulationFrame extends JFrame {
@@ -170,30 +173,115 @@ public class SimulationFrame extends JFrame {
         simulationTab.add(speedPanel, BorderLayout.SOUTH);
         tabbedPane.addTab("Simulation", simulationTab);
 
+        JPanel learnPanel = new JPanel();
+        learnPanel.setLayout(new BorderLayout());
+
+// Text section
         JTextArea learnText = new JTextArea();
         learnText.setEditable(false);
         learnText.setLineWrap(true);
         learnText.setWrapStyleWord(true);
+        learnText.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        learnText.setFont(new Font("SansSerif", Font.PLAIN, 14)); // change 14 to whatever size you want
         learnText.setText(
-                "🔬 Human Sickle Cell Simulation\n\n" +
-                        "This simulation models the inheritance of sickle cell alleles (AA, AS, SS) in human populations.\n" +
-                        "It shows how traits vary across generations based on real-world factors like:\n" +
-                        "- Healthcare availability\n" +
-                        "- Malaria pressure (regional selection)\n" +
-                        "- Mutation\n\n" +
-                        "📚 Sources:\n" +
-                        "- CDC: https://www.cdc.gov/ncbddd/sicklecell/data.html\n" +
-                        "- WHO: https://www.who.int/news-room/fact-sheets/detail/sickle-cell-disease\n" +
-                        "- Tishkoff et al., 2001: Global Patterns of Variation in Sickle Cell Trait\n"
+                "What is Sickle Cell Disease? \n\n" +
+                "Sickle cell disease (SCD) is a group of inherited red blood cell disorders. It affects the hemoglobin, the molecule in red blood cells that delivers oxygen to the body. \n " +
+                        "In people with SCD, red blood cells are shaped like a crescent or “sickle”, instead of the normal round shape. These misshapen cells: \n" +
+                        "- Don’t flow well through blood vessels\n" +
+                        "\n" +
+                        "- Clump together and block circulation\n" +
+                        "\n" +
+                        "- Break apart easily, causing a shortage of red blood cells (anemia) \n" +
+                        "What is Sickle Cell Disease \n\n" +
+                        "Sickle cell disease is caused by a mutation in the HBB gene, which provides instructions for making part of hemoglobin.\n" +
+                        "\n" +
+                        "- There are three key genotypes:\n" +
+                        "\n" +
+                        "- AA — Normal hemoglobin (no disease)\n" +
+                        "\n" +
+                        "- AS — Sickle cell trait (a carrier; usually healthy)\n" +
+                        "\n" +
+                        "- SS — Sickle cell anemia (disease present)\n" +
+                        "\n" +
+                        "To develop full sickle cell anemia, a person must inherit two sickle alleles (S) — one from each parent.\n\n" +
+
+                        " Symptoms and Risks\n" +
+                        "- Episodes of pain (called crises)\n" +
+                        "\n" +
+                        "- Fatigue, anemia\n" +
+                        "\n" +
+                        "- Swelling in hands and feet\n" +
+                        "\n" +
+                        "- Vision problems\n" +
+                        "\n" +
+                        "- Increased risk of infection and stroke\n" +
+                        "\n" +
+                        "Symptoms usually begin in early childhood and can be life-threatening without treatment. \n\n" +
+
+                        "There is no universal cure, but treatments include:\n" +
+                        "\n" +
+                        "- Pain management\n" +
+                        "\n" +
+                        "- Blood transfusions\n" +
+                        "\n" +
+                        "- Antibiotics to prevent infection\n" +
+                        "\n" +
+                        "- Hydroxyurea (a medicine that helps reduce sickling)\n" +
+                        "\n" +
+                        "- Bone marrow transplant (only curative option, but rare)\n" +
+                        "\n" +
+                        "With good medical care, people with sickle cell disease can live into adulthood and manage symptoms.\n" +
+                        "\n" +
+
+                "Understanding Human Genetic Variation Through Sickle Cell Simulation \n\n" +
+                        "This simulation demonstrates how genetic traits, like the sickle cell allele, are shaped by both biological inheritance and environmental factors across generations. It reflects a real-world example of balanced polymorphism, where a trait that may be harmful in one context can provide survival advantages in another. Let's break down what this simulation reveals.\n\n" +
+
+                        "Sickle Cell and Genetics \n" +
+                        "There are three genotypes related to the sickle cell gene:\n" +
+                        "- AA — Normal hemoglobin (healthy, no sickle trait)\n" +
+                        "- AS — Carrier (one sickle allele, one normal)\n" +
+                        "- SS — Sickle cell anemia (two sickle alleles, affected)\n" +
+                        "The sickle cell trait follows Mendelian inheritance, but its persistence in populations cannot be explained by genetics alone — environment plays a huge role.\n\n" +
+
+                        "Regional Influence: The Malaria Link\n" +
+                        "One of the most significant insights from the simulation is the selective advantage of the AS genotype in regions where malaria is prevalent, such as West Africa. Individuals with AS genotype are more resistant to malaria, which increases their survival and reproductive success in these environments — this is why sickle cell persists at high frequencies in some populations.\n\n" +
+                        "Source: Allison, A.C. (1954). Protection afforded by sickle-cell trait against subtertian malarial infection. British Medical Journal.\n" +
+                        "Source: CDC. https://www.cdc.gov/ncbddd/sicklecell/data.html\n\n" +
+
+                        "Role of Healthcare Access\n" +
+                        "In areas with limited access to healthcare, individuals with SS genotype (sickle cell anemia) often face severe health outcomes including pain, anemia, stroke, and early mortality. The simulation models this by increasing death rates when healthcare is unavailable.\n\n" +
+                        "When healthcare is accessible, mortality drops significantly, which in turn can allow more SS individuals to survive and reproduce, slightly increasing the frequency of the allele — this is another real-world example of how social factors influence genetic variation.\n\n" +
+                        "Source: Piel et al., 2010. Global distribution of the sickle cell gene and geographical confirmation of the malaria hypothesis. Nature Communications.\n\n" +
+
+                        "Evolution in Action\n" +
+                        "This simulation shows how evolution is not always about “survival of the fittest” in a universal sense — it’s about survival relative to local environments.\n\n" +
+                        "- In malaria-endemic regions, the AS genotype is favored.\n" +
+                        "- In regions with advanced healthcare, SS individuals can survive longer.\n" +
+                        "- In non-malaria areas with no advantage, the sickle allele may gradually disappear.\n\n"
+
         );
+
         JScrollPane learnScroll = new JScrollPane(learnText);
-        tabbedPane.addTab("Learn", learnScroll);
+
+// Image section
+        JLabel imageLabel = new JLabel("", JLabel.CENTER);
+        try {
+            Image image = ImageIO.read(getClass().getResource("/sicklecellsimulation/sickle_cell.jpeg"));
+            Image scaled = image.getScaledInstance(600, 250, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(scaled));
+        } catch (Exception e) {
+            imageLabel.setText("Image not found");
+            e.printStackTrace();
+        }
+
+
+// Combine them
+        JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, learnScroll, imageLabel);
+        splitPane.setResizeWeight(0.7);  // 70% for text, 30% for image
+
+        learnPanel.add(splitPane, BorderLayout.CENTER);
+        tabbedPane.addTab("Learn", learnPanel);
         add(tabbedPane, BorderLayout.CENTER);
-
-
-
-
-
         setVisible(true);
 
         // Button Actions
@@ -307,6 +395,13 @@ public class SimulationFrame extends JFrame {
         item.add(text);
         return item;
     }
+    public void clearGraphData() {
+        if (graphWindow != null) {
+            graphWindow.clearGraph();  // ✅ actually resets line graph
+        }
+    }
+
+
 
     public void updateStats(int generation, int healthy, int carriers, int sickle) {
         populationLabel.setText("Total Population: " + (healthy + carriers + sickle));

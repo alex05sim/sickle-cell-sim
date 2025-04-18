@@ -180,8 +180,16 @@ class SimulationPanel extends JPanel {
     private Individual addNewIndividual() {
 
         // Select two random parents
-        Individual parent1 = individuals[random.nextInt(populationSize)];
-        Individual parent2 = individuals[random.nextInt(populationSize)];
+        Individual parent1, parent2;
+
+        do {
+            parent1 = individuals[random.nextInt(populationSize)];
+        } while (parent1.getGenotype().equals("SS") && Math.random() < 0.8);  // 80% chance to skip SS
+
+        do {
+            parent2 = individuals[random.nextInt(populationSize)];
+        } while (parent2.getGenotype().equals("SS") && Math.random() < 0.8);
+
 
         // Create offspring near parents
         int birthX = (int) ((parent1.getX() + parent2.getX()) / 2 + random.nextInt(20) - 10);
@@ -216,6 +224,10 @@ class SimulationPanel extends JPanel {
     }
     public void resetSimulation() {
         timer.stop();
+
+        if (frame != null) {
+            frame.clearGraphData();
+        }
         if (frame != null) {
             startSimulation(
                     populationSize,
@@ -273,9 +285,16 @@ class SimulationPanel extends JPanel {
 
 
         if (individuals != null) {
-            for (Individual individual : individuals) {
-                individual.draw(g);
+            int drawSize = 10; // default size
+
+            if (individuals.length > 200) {
+                drawSize = Math.max(2, 10 - individuals.length / 800); // shrink if large population
             }
+
+            for (Individual individual : individuals) {
+                individual.draw(g, drawSize);
+            }
+
         }
         if (malariaRegion) {
             g.setColor(new Color(0, 100, 0, 180)); // green banner
@@ -318,4 +337,7 @@ class SimulationPanel extends JPanel {
         g.drawString("SS", 115, baseY + 15);
 
     }
+
+
+
 }
