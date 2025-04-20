@@ -375,7 +375,7 @@ public class SimulationFrame extends JFrame {
     }
     public void clearGraphData() {
         if (graphWindow != null) {
-            graphWindow.clearGraph();  // ✅ actually resets line graph
+            graphWindow.clearGraph();  
         }
     }
 
