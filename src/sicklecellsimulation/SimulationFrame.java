@@ -41,7 +41,7 @@ public class SimulationFrame extends JFrame {
         controlPanel.setPreferredSize(new Dimension(250, 700));
         //UI
 
-        String[] regions = { "West Africa", "United States", "Europe" };
+        String[] regions = { "West Africa", "United States", "Europe", "Custom" };
         JComboBox<String> regionSelector = new JComboBox<>(regions);
         controlPanel.add(new JLabel("Region:"));
         controlPanel.add(regionSelector);
@@ -286,31 +286,6 @@ public class SimulationFrame extends JFrame {
 
         // Button Actions
 
-        regionSelector.addActionListener(e -> {
-            String selectedRegion = (String) regionSelector.getSelectedItem();
-
-            switch (selectedRegion) {
-                case "West Africa":
-                    sickleCellStartField.setText("10");
-                    mutationRateField.setText("0.1");
-                    healthcareToggle.setSelected(false);
-                    malariaToggle.setSelected(true);
-                    break;
-                case "United States":
-                    sickleCellStartField.setText("1");
-                    mutationRateField.setText("0.05");
-                    healthcareToggle.setSelected(true);
-                    malariaToggle.setSelected(false);
-                    break;
-                case "Europe":
-                    sickleCellStartField.setText("0");
-                    mutationRateField.setText("0.01");
-                    healthcareToggle.setSelected(true);
-                    malariaToggle.setSelected(false);
-                    break;
-            }
-        });
-
         startButton.addActionListener(e -> {
 
             String selectedRegion = (String) regionSelector.getSelectedItem();
@@ -334,6 +309,9 @@ public class SimulationFrame extends JFrame {
                     healthcareToggle.setSelected(true);
                     malariaToggle.setSelected(false);
                     break;
+                case "Custom":
+                    break;
+
             }
 
 

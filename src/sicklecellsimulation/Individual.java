@@ -1,5 +1,4 @@
 package sicklecellsimulation;
-
 import java.awt.*;
 import java.util.List;
 
@@ -17,9 +16,6 @@ class Individual {
     private final List<Individual> children = new ArrayList<>();
     private int age = 0;
 
-
-
-
     public Individual(int x, int y, Individual parent1, Individual parent2) {
         this.x = x;
         this.y = y;
@@ -35,7 +31,6 @@ class Individual {
         if (rawGenotype.equals("SA")) rawGenotype = "AS";
         this.genotype = rawGenotype;
 
-
         // Set color based on genotype
         switch (genotype) {
             case "AA" -> this.color = Color.BLUE;
@@ -46,15 +41,6 @@ class Individual {
     public String getGenotype() {
         return genotype;
     }
-
-    public Individual getParent1() {
-        return parent1;
-    }
-
-    public Individual getParent2() {
-        return parent2;
-    }
-
     // Randomly returns either "A" or "S" based on parent's genotype
     public String getRandomAllele() {
         if (genotype.equals("AA")) return "A";
@@ -191,6 +177,15 @@ class Individual {
     public void incrementAge() {
         age++;
     }
+
+    public Individual getParent1() {
+        return parent1;
+    }
+
+    public Individual getParent2() {
+        return parent2;
+    }
+
 
     public int getSubtreeSize() {
         int size = 1;
