@@ -31,7 +31,21 @@ The simulation runs generational cycles where individuals reproduce, mutate, and
 
 ## Screenshots
 
-_(add screenshots of the simulation and Learn tab here if available)_
+### Main Simulation
+![image](https://github.com/user-attachments/assets/30cc8b2d-d7a8-4f31-b59d-2896909f94ed)
+
+### Tree View
+![image](https://github.com/user-attachments/assets/64b51b37-b28f-49e0-bdf1-70e6a4b6be6f)
+
+### Graph View
+![image](https://github.com/user-attachments/assets/d2172262-190c-4c49-a8f0-36a5dff79006)
+
+### Learn Tab
+![image](https://github.com/user-attachments/assets/d6b3f912-5514-490c-b2aa-7a8fe3e29bc2)
+
+
+
+
 
 ## Scientific Sources
 
