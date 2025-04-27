@@ -29,6 +29,9 @@ Users can control:
 
 The simulation runs generational cycles where individuals reproduce, mutate, and die. It models genotype inheritance using Mendelian rules and includes selection pressure from environmental and healthcare variables.
 
+# Video 
+https://youtu.be/QK33uys2c_c   
+
 ## Screenshots
 
 ### Main Simulation
