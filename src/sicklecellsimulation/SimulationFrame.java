@@ -17,9 +17,11 @@ public class SimulationFrame extends JFrame {
     public GraphWindow graphWindow; //
     public final JCheckBox healthcareToggle;
     private final JCheckBox malariaToggle;
+    final JCheckBox driftToggle;
 
 
     public SimulationFrame() {
+
         setTitle("Simulation of Human Sickle Cell Variation Across Generations");
         setSize(1200, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -80,6 +82,10 @@ public class SimulationFrame extends JFrame {
         growthToggle = new JCheckBox("Enable Population Growth");
         controlPanel.add(growthToggle);
 
+        driftToggle = new JCheckBox("Enable Genetic Drift");
+        controlPanel.add(driftToggle);
+
+
         startButton = new JButton("Start");
         controlPanel.add(startButton);
 
@@ -95,7 +101,7 @@ public class SimulationFrame extends JFrame {
         treeButton = new JButton("Show Family Tree");
         controlPanel.add(treeButton);
 
-        int buttonWidth = 200; // or 250 to match sidebar
+        int buttonWidth = 200;
         Dimension buttonSize = new Dimension(buttonWidth, 35);
 
         startButton.setMaximumSize(buttonSize);
@@ -111,6 +117,7 @@ public class SimulationFrame extends JFrame {
         treeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         healthcareToggle.setAlignmentX(Component.CENTER_ALIGNMENT);
         malariaToggle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        driftToggle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
 

@@ -2,9 +2,7 @@ package sicklecellsimulation;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class FamilyTreePanel extends JPanel {
@@ -36,11 +34,6 @@ public class FamilyTreePanel extends JPanel {
             }
         });
     }
-    public void setScale(double scale) {
-        this.scale = scale;
-        revalidate();
-        repaint();
-    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -62,10 +55,6 @@ public class FamilyTreePanel extends JPanel {
         revalidate();
 
     }
-
-
-
-
 
     private void updatePreferredSize() {
         int depth = getDepth(root);

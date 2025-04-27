@@ -22,8 +22,6 @@ class SimulationPanel extends JPanel {
 
 
     private double reproductionRate, deathRate, mutationRate;
-    private List<Generation> generations = new ArrayList<>();
-
     public SimulationPanel() {
         setBackground(Color.WHITE);
         timer = new Timer(100, e -> {
@@ -33,14 +31,27 @@ class SimulationPanel extends JPanel {
             }
         });
     }
-    // Based on carrier rates ~8-10% in U.S. Black population
-// and SS ~0.2–1%
+
     private String getRandomGenotype(int sickleStartPercent) {
-        int roll = random.nextInt(1000);
-        if (roll < 10) return "SS";         // 1%
-        else if (roll < 100) return "AS";   // 9%
-        else return "AA";                   // 90%
+        int roll = random.nextInt(100);  // Roll between 0 and 99
+
+        if (sickleStartPercent >= 100) {
+            // 100% sickle => random between AS and SS
+            return random.nextBoolean() ? "AS" : "SS";
+        } else if (sickleStartPercent <= 0) {
+            // 0% sickle => all healthy
+            return "AA";
+        } else {
+            if (roll < sickleStartPercent / 2) {
+                return "SS";  // Homozygous sickle
+            } else if (roll < sickleStartPercent) {
+                return "AS";  // Carrier
+            } else {
+                return "AA";  // Healthy
+            }
+        }
     }
+
 
     private void updateCounts(Individual ind) {
         if (ind.isHealthy()) {
@@ -162,10 +173,39 @@ class SimulationPanel extends JPanel {
             if (Math.random() < adjustedDeathRate) {
                 ind.animateDeath();
                 removeRandomIndividual(i);
-                deathsThisGen++;
                 break;
             }
+
         }
+        // Genetic Drift - Random deaths (optional, toggleable)
+        if (frame.driftToggle.isSelected()) {
+            double driftChance;
+
+            if (populationSize < 500) {
+                driftChance = 0.02; // 2% random death if small pop
+            } else if (populationSize < 1000) {
+                driftChance = 0.005; // 0.5% random death if medium pop
+            } else {
+                driftChance = 0.001; // minimal drift in large pops
+            }
+
+            int randomDeathsThisGen = 0;
+            int maxDriftDeaths = (int)(populationSize * 0.05); // Optional cap: 5% max deaths from drift
+
+            for (int i = 0; i < individuals.length; i++) {
+                if (randomDeathsThisGen >= maxDriftDeaths) break;
+
+                Individual ind = individuals[i];
+                if (ind == null) continue;
+                if (Math.random() < driftChance) {
+                    ind.animateDeath();
+                    removeRandomIndividual(i);
+
+                    break;
+                }
+            }
+        }
+
 
         repaint();
         if (frame != null) {
@@ -215,7 +255,8 @@ class SimulationPanel extends JPanel {
         if (populationSize <= 10) return; // Prevent total wipeout
         removeCounts(individuals[indexToRemove]);
 
-        // Move last individual to the removed slot to avoid shifting the entire array
+        // Move last individual to the removed slot to avoid shifting array
+
         individuals[indexToRemove] = individuals[populationSize - 1];
         Individual[] newPop = new Individual[populationSize - 1];
         System.arraycopy(individuals, 0, newPop, 0, populationSize - 1);
